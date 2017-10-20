@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-#if DEBUG
 using Xamarin.Forms;
 
 using UITestSampleApp.Shared;
@@ -16,6 +15,17 @@ namespace UITestSampleApp
         #endregion
 
         #region Methods
+        public static void NavigateToListViewPage()
+        {
+            // Navigate to List View Page by recreating the Navigation Stack to mimic the user journey
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await Application.Current.MainPage.Navigation.PopToRootAsync();
+                await Application.Current.MainPage.Navigation.PushAsync(new ListPage());
+            });
+        }
+
+		#if DEBUG
         public static void BypassLoginScreen() => App.Navigation.PopToRootAsync();
 
         public static void OpenListViewPage()
@@ -32,15 +42,7 @@ namespace UITestSampleApp
             }
         }
 
-        public static void NavigateToListViewPage()
-        {
-            // Navigate to List View Page by recreating the Navigation Stack to mimic the user journey
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                await Application.Current.MainPage.Navigation.PopToRootAsync();
-                await Application.Current.MainPage.Navigation.PushAsync(new ListPage());
-            });
-        }
+
 
         public static string GetListViewPageDataAsBase64String()
         {
@@ -61,6 +63,7 @@ namespace UITestSampleApp
             return listViewModel.DataList;
         }
 
+		#endif
         static Page GetCurrentPage()
         {
             if (Application.Current.MainPage.Navigation.ModalStack.Any())
@@ -71,4 +74,3 @@ namespace UITestSampleApp
         #endregion
     }
 }
-#endif
